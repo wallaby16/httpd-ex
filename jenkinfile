@@ -1,0 +1,6 @@
+node('') {
+  stage 'build'
+  openshiftBuild(namespace: 'httpd', buildConfig: 'httpd-example', showBuildLogs: 'true')
+  stage 'deploy'
+  openshiftDeploy(namespace: 'httpd', deploymentConfig: 'httpd-example')
+}
