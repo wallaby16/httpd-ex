@@ -1,6 +1,18 @@
-node('') {
-  stage 'build'
-  openshiftBuild(namespace: 'httpd', buildConfig: 'httpd-example', showBuildLogs: 'true')
-  stage 'deploy'
-  openshiftDeploy(namespace: 'httpd', deploymentConfig: 'httpd-example')
-}
+kind: BuildConfig
+apiVersion: v1
+metadata:
+  name: httpd-pipeline
+spec:
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfile: |-
+        node('') {
+          stage 'buildInDevelopment'
+          openshiftBuild(namespace: 'httpd', buildConfig: 'httpd-ex', showBuildLogs: 'true')
+          stage('Deploy approval'){
+            input "Deploy to prod?"
+            }
+          stage 'deployInDevelopment'
+          openshiftDeploy(namespace: 'httpd', deploymentConfig: 'httpd-ex')
+          openshiftScale(namespace: 'httpd', deploymentConfig: 'httpd-ex',replicaCount: '2')
+        }
