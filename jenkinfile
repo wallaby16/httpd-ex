@@ -1,10 +1,10 @@
         node('') {
           stage 'buildInDevelopment'
-          openshiftBuild(namespace: 'httpd', buildConfig: 'httpd-ex', showBuildLogs: 'true')
+          openshiftBuild(namespace: 'development', buildConfig: 'httpd-ex', showBuildLogs: 'true')
           stage('Deploy approval'){
             input "Deploy to prod?"
             }
           stage 'deployInDevelopment'
-          openshiftDeploy(namespace: 'httpd', deploymentConfig: 'httpd-ex')
-          openshiftScale(namespace: 'httpd', deploymentConfig: 'httpd-ex',replicaCount: '2')
+          openshiftDeploy(namespace: 'development', deploymentConfig: 'httpd-ex')
+          openshiftScale(namespace: 'development', deploymentConfig: 'httpd-ex',replicaCount: '2')
         }
