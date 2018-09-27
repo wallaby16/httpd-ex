@@ -1,11 +1,3 @@
-kind: BuildConfig
-apiVersion: v1
-metadata:
-  name: httpd-pipeline
-spec:
-  strategy:
-    jenkinsPipelineStrategy:
-      jenkinsfile: |-
         node('') {
           stage 'buildInDevelopment'
           openshiftBuild(namespace: 'httpd', buildConfig: 'httpd-ex', showBuildLogs: 'true')
